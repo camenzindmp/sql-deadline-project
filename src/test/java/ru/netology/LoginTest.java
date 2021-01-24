@@ -15,12 +15,8 @@ public class LoginTest {
         val loginPage = new LoginPage();
         loginPage.openLoginPage();
         val VerificationPage = loginPage.login(AuthData.getAuthInfo());
-        val smsCode = AuthData.getVerificationCode(AuthData.getAuthInfo());
+        val smsCode = AuthData.getVerificationCode();
         VerificationPage.verify(smsCode);
     }
-
-    // to do:
-    // 1.) чистить бд после sut.
-    // 2.) получать из бд код.
 }
 

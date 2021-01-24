@@ -27,7 +27,7 @@ public class AuthData {
         private String smsCode;
     }
 
-    public static getVerificationCode(AuthInfo authInfo) throws SQLException {
+    public static VerificationCode getVerificationCode() throws SQLException {
         QueryRunner runner = new QueryRunner();
         ScalarHandler<Long> scalarHandler = new ScalarHandler<>();
         val dataSQL = "SELECT code * FROM auth_codes;";
@@ -39,7 +39,8 @@ public class AuthData {
                 );
         ) {
             val code = runner.query(conn, dataSQL, scalarHandler);
-            return code;
+            String smsCode = code.toString();
+            return new VerificationCode(smsCode);
         }
 
     }
