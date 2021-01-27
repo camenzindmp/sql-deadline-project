@@ -15,6 +15,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'com.codeborne:selenide:5.16.0'
+    testImplementation 'mysql:mysql-connector-java:8.0.18'
 }
 
 test {

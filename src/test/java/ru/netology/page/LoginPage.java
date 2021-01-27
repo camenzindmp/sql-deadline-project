@@ -1,13 +1,14 @@
-package ru.netology;
+package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.data.AuthData;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPage {
 
-    public void openLoginPage() {
+    public LoginPage() {
         open("http://localhost:9999");
     }
 

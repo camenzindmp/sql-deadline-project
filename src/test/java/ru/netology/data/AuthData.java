@@ -1,4 +1,4 @@
-package ru.netology;
+package ru.netology.data;
 
 import lombok.Value;
 import lombok.val;
@@ -27,22 +27,18 @@ public class AuthData {
         private String smsCode;
     }
 
-    public static VerificationCode getVerificationCode() throws SQLException {
+    public static VerificationCode getVerificationCode() {
         QueryRunner runner = new QueryRunner();
-        ScalarHandler<Long> scalarHandler = new ScalarHandler<>();
-        val dataSQL = "SELECT code * FROM auth_codes;";
-
-
-        try (
-                val conn = DriverManager.getConnection(
-                        "jdbc:mysql://172.23.0.1:3306/mysql", "admin", "pass"
-                );
-        ) {
-            val code = runner.query(conn, dataSQL, scalarHandler);
-            String smsCode = code.toString();
+        ScalarHandler<String> scalarHandler = new ScalarHandler<>();
+        val dataSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1;";
+        try (val conn = DriverManager.getConnection(
+                "jdbc:mysql://172.23.0.1:3306/app", "admin", "pass")) {
+            val smsCode = runner.query(conn, dataSQL, scalarHandler);
             return new VerificationCode(smsCode);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
-
+        return null;
     }
 }
 
