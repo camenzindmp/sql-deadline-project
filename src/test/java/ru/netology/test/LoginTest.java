@@ -9,11 +9,32 @@ import ru.netology.page.LoginPage;
 public class LoginTest {
 
     @Test
-    public void loginTest() {
+    public void successLoginTest() {
         val loginPage = new LoginPage();
-        val VerificationPage = loginPage.login(AuthData.getAuthInfo());
+        val VerificationPage = loginPage.correctDataLogin(AuthData.getAuthInfo());
+        val smsCode = AuthData.getVerificationCode();
+        VerificationPage.verify(smsCode);
+    }
+
+    @Test
+    public void failedLoginTest() {
+        val loginPage = new LoginPage();
+        loginPage.wrongPasswordLogin(AuthData.getWrongAuthInfo());
+    }
+
+    @Test
+    // система не блокируется при троекратном вводе неверного пароля!
+    public void successLoginAfterTripleFailed() {
+        val loginPage = new LoginPage();
+        loginPage.wrongPasswordLogin(AuthData.getWrongAuthInfo());
+        loginPage.wrongPasswordLogin(AuthData.getWrongAuthInfo());
+        loginPage.wrongPasswordLogin(AuthData.getWrongAuthInfo());
+        val VerificationPage = loginPage.correctDataLogin(AuthData.getAuthInfo());
         val smsCode = AuthData.getVerificationCode();
         VerificationPage.verify(smsCode);
     }
 }
+
+
+
 

@@ -22,6 +22,10 @@ public class AuthData {
         return new AuthInfo("vasya", "qwerty123");
     }
 
+    public static AuthInfo getWrongAuthInfo() {
+        return new AuthInfo("vasya", "badpassword");
+    }
+
     @Value
     public static class VerificationCode {
         private String smsCode;
