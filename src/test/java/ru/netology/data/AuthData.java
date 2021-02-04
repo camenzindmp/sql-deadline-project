@@ -18,7 +18,7 @@ public class AuthData {
         private String password;
     }
 
-    public static AuthInfo getAuthInfo() {
+    public static AuthInfo getCorrectAuthInfo() {
         return new AuthInfo("vasya", "qwerty123");
     }
 
@@ -31,13 +31,19 @@ public class AuthData {
         private String smsCode;
     }
 
-    public static VerificationCode getVerificationCode() {
+    public static VerificationCode getWrongVerificationCode() {
+        String smsCode = "123";
+        return new VerificationCode(smsCode);
+    }
+
+    public static VerificationCode getCorrectVerificationCode() {
         QueryRunner runner = new QueryRunner();
         ScalarHandler<String> scalarHandler = new ScalarHandler<>();
         val dataSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1;";
         try (val conn = DriverManager.getConnection(
-                "jdbc:mysql://172.23.0.1:3306/app", "admin", "pass")) {
-            val smsCode = runner.query(conn, dataSQL, scalarHandler);
+                "jdbc:mysql://localhost:3306/app", "admin", "pass")) {
+
+            String smsCode = runner.query(conn, dataSQL, scalarHandler);
             return new VerificationCode(smsCode);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
