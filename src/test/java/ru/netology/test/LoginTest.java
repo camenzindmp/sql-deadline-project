@@ -1,19 +1,19 @@
 package ru.netology.test;
 
 import lombok.val;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.AuthData;
 import ru.netology.page.LoginPage;
-import ru.netology.page.VerificationPage;
 
 public class LoginTest {
 
     @Test // Логин с верными данными и смс-кодом;
     public void successLoginTest() {
         val loginPage = new LoginPage();
-        val VerificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
+        val verificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
         val smsCode = AuthData.getCorrectVerificationCode();
-        VerificationPage.validVerify(smsCode);
+        verificationPage.validVerify(smsCode);
     }
 
     @Test // Логин с некорректным паролем;
@@ -25,9 +25,9 @@ public class LoginTest {
     @Test // Логин с корректными данными но некорректным смс-кодом;
     public void loginWithWrongCode() {
         val loginPage = new LoginPage();
-        val VerificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
+        val verificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
         val smsCode = AuthData.getWrongVerificationCode();
-        VerificationPage.invalidVerify(smsCode);
+        verificationPage.invalidVerify(smsCode);
     }
 
     @Test // Логин с троекратным вводом неправильного пароля;
@@ -35,9 +35,14 @@ public class LoginTest {
         val loginPage = new LoginPage();
         loginPage.tripleWrongPasswordLogin(AuthData.getWrongAuthInfo());
         loginPage.clearAllFields();
-        val VerificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
+        val verificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
         val smsCode = AuthData.getCorrectVerificationCode();
-        VerificationPage.blockedVerify(smsCode);
+        verificationPage.blockedVerify(smsCode);
+    }
+
+    @AfterAll
+    public static void clear() {
+        AuthData.clearTables();
     }
 }
 

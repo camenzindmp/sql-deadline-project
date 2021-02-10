@@ -42,7 +42,6 @@ public class AuthData {
         val dataSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1;";
         try (val conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "admin", "pass")) {
-
             String smsCode = runner.query(conn, dataSQL, scalarHandler);
             return new VerificationCode(smsCode);
         } catch (SQLException sqlException) {
@@ -50,5 +49,32 @@ public class AuthData {
         }
         return null;
     }
+
+//    public static Integer clearTables() {
+//        try (val conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "admin", "pass");
+//             Statement statement = connection.createStatement()) {
+//            int result = statement.executeUpdate("TRUNCATE" + "auth_codes, card_transactions, users, cards");
+//            return result;
+//        } catch (SQLException sqlException) {
+//            sqlException.printStackTrace();
+//        }
+//        return null;
+//    }
+
+    public static String clearTables() {
+        QueryRunner runner = new QueryRunner();
+        ScalarHandler<String> scalarHandler = new ScalarHandler<>();
+        val clearRequest = "TRUNCATE TABLE auth_codes, card_transactions, users, cards;";
+        try (val conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/app", "admin", "pass")) {
+            String result = runner.query(conn, clearRequest, scalarHandler);
+            return result;
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
 }
 
+
+//
