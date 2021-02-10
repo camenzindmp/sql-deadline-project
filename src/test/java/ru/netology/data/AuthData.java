@@ -50,30 +50,21 @@ public class AuthData {
         return null;
     }
 
-//    public static Integer clearTables() {
-//        try (val conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "admin", "pass");
-//             Statement statement = connection.createStatement()) {
-//            int result = statement.executeUpdate("TRUNCATE" + "auth_codes, card_transactions, users, cards");
-//            return result;
-//        } catch (SQLException sqlException) {
-//            sqlException.printStackTrace();
-//        }
-//        return null;
-//    }
-
-    public static String clearTables() {
+    public static void clearTables() {
         QueryRunner runner = new QueryRunner();
-        ScalarHandler<String> scalarHandler = new ScalarHandler<>();
-        val clearRequest = "TRUNCATE TABLE auth_codes, card_transactions, users, cards;";
+        val clearCodes = "TRUNCATE auth_codes;";
+        val clearCards = "TRUNCATE cards;";
+        val clearUsers = "TRUNCATE users;";
         try (val conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "admin", "pass")) {
-            String result = runner.query(conn, clearRequest, scalarHandler);
-            return result;
+            runner.update(conn, clearCodes);
+            runner.update(conn, clearCards);
+            runner.update(conn, clearUsers);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return null;
     }
+
 }
 
 

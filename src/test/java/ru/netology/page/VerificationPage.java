@@ -1,7 +1,6 @@
 package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.Keys;
 import ru.netology.data.AuthData;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -15,10 +14,6 @@ public class VerificationPage {
 
     public VerificationPage() {
         codeField.shouldBe(visible);
-    }
-
-    public void clearCodeField() {
-        codeField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 
     public DashboardPage validVerify(AuthData.VerificationCode verificationCode) {

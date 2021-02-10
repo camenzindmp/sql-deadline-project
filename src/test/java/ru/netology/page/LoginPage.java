@@ -2,9 +2,10 @@ package ru.netology.page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.Keys;
 import ru.netology.data.AuthData;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -20,9 +21,8 @@ public class LoginPage {
     private SelenideElement loginButton = $("[type=button] [class='button__content']");
     private SelenideElement errorNotification = $("[data-test-id=error-notification]");
 
-    public void clearAllFields() {
-        loginField.doubleClick().sendKeys(Keys.BACK_SPACE);
-        passwordField.doubleClick().sendKeys(Keys.BACK_SPACE);
+    public void loginBlocked() {
+        errorNotification.shouldBe(visible).shouldHave(text("Ошибка! Превышено количество попыток ввода кода"));
     }
 
     public VerificationPage correctDataLogin(AuthData.AuthInfo info) {

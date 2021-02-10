@@ -30,18 +30,15 @@ public class LoginTest {
         verificationPage.invalidVerify(smsCode);
     }
 
-    @Test // Логин с троекратным вводом неправильного пароля;
-    public void blockedLoginAfterTripleFailed() {
+    @Test
+    public void blockedLoginAfterTripleWrongPassword() {
         val loginPage = new LoginPage();
         loginPage.tripleWrongPasswordLogin(AuthData.getWrongAuthInfo());
-        loginPage.clearAllFields();
-        val verificationPage = loginPage.correctDataLogin(AuthData.getCorrectAuthInfo());
-        val smsCode = AuthData.getCorrectVerificationCode();
-        verificationPage.blockedVerify(smsCode);
+        loginPage.loginBlocked();
     }
 
     @AfterAll
-    public static void clear() {
+    public static void cleanUp() {
         AuthData.clearTables();
     }
 }
